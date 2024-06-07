@@ -18,7 +18,7 @@ public class CreateProductRequest {
 	private String description;
 	private int price;
 	private int discountedPrice;
-	private int discountPresent;
+	private int discountPercent;
 	private int quantity;
 	private String brand;
 	private String color;

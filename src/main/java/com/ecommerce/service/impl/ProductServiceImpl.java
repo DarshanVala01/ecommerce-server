@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.request.CreateProductRequest;
 import com.ecommerce.service.ProductService;
-import com.ecommerce.service.UserService;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService{
 	private ProductRepository productRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 	
 	
 	@Override
@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService{
 		product.setColor(request.getColor());
 		product.setDescription(request.getDescription());
 		product.setDiscountedPrice(request.getDiscountedPrice());
-		product.setDiscountPresent(request.getDiscountPresent());
+		product.setDiscountPercent(request.getDiscountPercent());
 		product.setImageUrl(request.getImageUrl());
 		product.setBrand(request.getBrand());
 		product.setPrice(request.getPrice());
@@ -132,9 +132,17 @@ public class ProductServiceImpl implements ProductService{
 			if (stock.equals("in_stock")) {
 				products = products.stream().filter(p -> p.getQuantity()>0).collect(Collectors.toList());
 			}
+			else if (stock.equals("out_of_stock")) {
+				products = products.stream().filter(p -> p.getQuantity()<1).collect(Collectors.toList());
+			}
 		}
 		
-		return null;
+		int startIndex = (int) pageable.getOffset();
+		int endIndex = Math.min(startIndex + pageable.getPageSize() , products.size());
+		
+		List<Product> pageContent = products.subList(startIndex, endIndex);
+		Page<Product> filterProducts = new PageImpl<>(pageContent,pageable,products.size());
+		return filterProducts;
 	}
 
 }

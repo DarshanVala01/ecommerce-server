@@ -28,10 +28,13 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
 	@Autowired
 	private JwtProvider jwtProvider;
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private CustomUserServiceImpl customUserServiceImpl;
 
@@ -42,7 +45,7 @@ public class AuthController {
 		String firstName = user.getFirstName();
 		String lastName = user.getLastName();
 		
-		User isEmailExist = this.userRepository.findByEmail(email);
+		User isEmailExist = this.userRepository.findByEmail(user.getEmail());
 		if (isEmailExist!=null) {
 			throw new UserException("Email is already used with another account");
 		}

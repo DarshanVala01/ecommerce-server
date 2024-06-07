@@ -1,6 +1,7 @@
 package com.ecommerce.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,14 +20,14 @@ import lombok.NoArgsConstructor;
 public class Category {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long categoryId;
 	
 	@NotNull
 	@Size(max=50)
 	private String name;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="parent_category_id")
 	private Category parentCategory;
 	

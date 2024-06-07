@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 	private String firstName;
 	private String lastName;
@@ -41,7 +41,7 @@ public class User {
 	
 	@Embedded
 	@ElementCollection
-	@CollectionTable(name="payment_information" , joinColumns = @JoinColumn(name="user_id"))
+//	@CollectionTable(name="payment_information" , joinColumns = @JoinColumn(name="user_id"))
 	private List<PaymentInfo> paymentInformation = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)

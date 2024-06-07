@@ -11,31 +11,26 @@ import com.ecommerce.model.Product;
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	// This code is using JPQL(Java Persistence Query Language)...
-	@Query("SELECT p FROM Product p" +
-	"WHERE(p.category.name =:category OR :category='')" +
-	"AND ((:minPrice IS NULL AND :maxPrice IS NULL) OR (p.discountedPrice BETWEEN :minPrice AND :maxPrice))"+
-	"AND (:minDiscount IS NULL OR p.discountPresent >=:minDiscount )"+
-	"ORDER BY"+
-	"CASE WHEN :sort = 'price_low' THEN p.discountedPrice END ASC" +
-	"CASE WHEN :sort = 'price_high' THEN p.discountedPrice END DESC")
-	public List<Product> filterProducts(@Param("category") String category ,@Param("minPrice") int minPrice , @Param("maxPrice") int maxPrice ,
-										@Param("minDiscount") int minDiscount ,@Param("sort") String sort);
+//	@Query("SELECT p FROM Product p" +
+//		"WHERE(p.category.name = :category OR :category='')" +
+//		"AND ((:minPrice IS NULL AND :maxPrice IS NULL) OR (p.discountedPrice BETWEEN :minPrice AND :maxPrice))"+
+//		"AND (:minDiscount IS NULL OR p.discountPercent >= :minDiscount )"+
+//		"ORDER BY"+
+//		"CASE WHEN :sort = 'price_low' THEN p.discountedPrice END ASC" +
+//		"CASE WHEN :sort = 'price_high' THEN p.discountedPrice END DESC")
+//	public List<Product> filterProducts(@Param("category") String category ,@Param("minPrice") int minPrice , @Param("maxPrice") int maxPrice ,
+//										@Param("minDiscount") int minDiscount ,@Param("sort") String sort);
 	
 	
-	
-	
-	// This code is Using MYSQL Query ...
-//	@Query("SELECT p.*"
-//			+ "FROM Product p"
-//			+ "JOIN Category c ON p.category_category_id = c.category_id"
-//			+ "WHERE (c.name = :category OR :category = '')"
-//			+ "  AND ((:minPrice IS NULL AND :maxPrice IS NULL) OR (p.discounted_price BETWEEN :minPrice AND :maxPrice))"
-//			+ "  AND (:minDiscount IS NULL OR p.discount_present >= :minDiscount)"
-//			+ "ORDER BY "
-//			+ "  CASE WHEN :sort = 'price_low' THEN p.discounted_price END ASC,"
-//			+ "  CASE WHEN :sort = 'price_high' THEN p.discounted_price END DESC", nativeQuery = true)
-//			public List<Product> filterProducts(@Param("category") String category ,@Param("minPrice") int minPrice , @Param("maxPrice") int maxPrice ,
-//												@Param("minDiscount") int minDiscount ,@Param("sort") String sort);
-		
-	
+	@Query(value = "SELECT p.* FROM Product p " +
+            "JOIN Category c ON p.category_id = c.id " +
+            "WHERE (:category IS NULL OR :category = '' OR c.name = :category) " +
+            "AND ((:minPrice IS NULL AND :maxPrice IS NULL) OR (p.discounted_price BETWEEN :minPrice AND :maxPrice)) " +
+            "AND (:minDiscount IS NULL OR p.discount_percent >= :minDiscount) " +
+            "ORDER BY " +
+            "CASE WHEN :sort = 'price_low' THEN p.discounted_price END ASC, " +
+            "CASE WHEN :sort = 'price_high' THEN p.discounted_price END DESC", nativeQuery = true)	
+			public List<Product> filterProducts(@Param("category") String category ,@Param("minPrice") int minPrice , @Param("maxPrice") int maxPrice ,
+												@Param("minDiscount") int minDiscount ,@Param("sort") String sort);
+
 	}
