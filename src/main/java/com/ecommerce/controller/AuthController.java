@@ -20,6 +20,7 @@ import com.ecommerce.model.User;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.request.LoginRequest;
 import com.ecommerce.response.AuthResponse;
+import com.ecommerce.service.CartService;
 import com.ecommerce.service.CustomUserServiceImpl;
 
 @RestController
@@ -28,15 +29,14 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private JwtProvider jwtProvider;
-	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
 	@Autowired
 	private CustomUserServiceImpl customUserServiceImpl;
+	@Autowired
+	private CartService cartService;
 
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException{
@@ -57,6 +57,7 @@ public class AuthController {
 		createdUser.setLastName(lastName);
 		
 		User savedUser = this.userRepository.save(createdUser);
+		this.cartService.createCart(savedUser);
 		
 		Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authentication);

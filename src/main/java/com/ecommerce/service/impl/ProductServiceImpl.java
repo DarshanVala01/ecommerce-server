@@ -35,32 +35,42 @@ public class ProductServiceImpl implements ProductService{
 	public Product createProduct(CreateProductRequest request) {
 		
 		Category topLevel = categoryRepository.findByName(request.getTopLevelCategory());
+		System.out.println("Top Level Category First:"+topLevel);
 		if (topLevel == null) {
+			System.out.println("In the if condition");
 			Category topLevelCategory = new Category();
+			System.out.println("Top Level Category"+request.getTopLevelCategory());
 			topLevelCategory.setName(request.getTopLevelCategory());
-			topLevelCategory.setLevel(2);
+			topLevelCategory.setLevel(1);
 			
 			topLevel = categoryRepository.save(topLevelCategory);
+			System.out.println("Top Level Category Second:"+topLevel);
 		}
+		
 		
 		Category secondLevel = categoryRepository.findByNameAndParent(request.getSecondLevelCategory(),topLevel.getName());
+		System.out.println("Second Level Category First:"+secondLevel);
 		if (secondLevel == null) {
 			Category secondLevelCategory = new Category();
-			secondLevelCategory.setName(request.getTopLevelCategory());
+			secondLevelCategory.setName(request.getSecondLevelCategory());
 			secondLevelCategory.setParentCategory(topLevel);
-			secondLevelCategory.setLevel(1);
+			secondLevelCategory.setLevel(2);
 			
 			secondLevel = categoryRepository.save(secondLevelCategory);
+			System.out.println("Second Level Category Second:"+secondLevel);
 		}
 		
+		
 		Category thirdLevel = categoryRepository.findByNameAndParent(request.getThirdLevelCategory(),secondLevel.getName());
+		System.out.println("Third Level Category First:"+thirdLevel);
 		if (thirdLevel == null) {
 			Category thirdLevelCategory = new Category();
-			thirdLevelCategory.setName(request.getTopLevelCategory());
-			thirdLevelCategory.setParentCategory(topLevel);
+			thirdLevelCategory.setName(request.getThirdLevelCategory());
+			thirdLevelCategory.setParentCategory(secondLevel);
 			thirdLevelCategory.setLevel(3);
 			
 			thirdLevel = categoryRepository.save(thirdLevelCategory);
+			System.out.println("Third Level Category Second:"+thirdLevel);
 		}
 		
 		Product product = new Product();
@@ -122,6 +132,7 @@ public class ProductServiceImpl implements ProductService{
 	public Page<Product> getAllProduct(String category, List<String> colors, List<String> sizes, Integer minPrice,
 			Integer maxPrice, Integer minDiscount, String sort, String stock, Integer pageNumber, Integer pageSize) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		
 		List<Product> products = this.productRepository.filterProducts(category, minPrice, maxPrice, minDiscount, sort);
 		
 		if (!colors.isEmpty()) {
@@ -143,6 +154,12 @@ public class ProductServiceImpl implements ProductService{
 		List<Product> pageContent = products.subList(startIndex, endIndex);
 		Page<Product> filterProducts = new PageImpl<>(pageContent,pageable,products.size());
 		return filterProducts;
+	}
+
+	@Override
+	public List<Product> findAllProducts() {
+		List<Product> findAllProduct = this.productRepository.findAll();
+		return findAllProduct;
 	}
 
 }

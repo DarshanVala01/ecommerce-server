@@ -10,7 +10,6 @@ import com.ecommerce.model.Address;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.CartRepository;
-import com.ecommerce.service.CartItemService;
 import com.ecommerce.service.OrderService;
 import com.ecommerce.service.ProductService;
 
@@ -19,8 +18,8 @@ public class OrderServiceImpl implements OrderService{
 
 	@Autowired
 	private CartRepository cartRepository;
-	@Autowired
-	private CartItemService cartItemService;
+//	@Autowired
+//	private CartService cartItemService;
 	@Autowired
 	private ProductService productService;
 	

@@ -20,7 +20,7 @@ public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long addressId;
+	private long id;
 	
 	private String firstName;
 	
