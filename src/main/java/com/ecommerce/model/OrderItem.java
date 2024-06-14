@@ -24,7 +24,7 @@ public class OrderItem {
 	private long id;
 	
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne	
 	private Order order;
 	
 	@ManyToOne

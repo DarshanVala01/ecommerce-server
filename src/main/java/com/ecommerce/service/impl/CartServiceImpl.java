@@ -58,7 +58,10 @@ public class CartServiceImpl implements CartService{
 
 	@Override
 	public Cart findUserCart(long userId) {
+		
 		Cart cart = this.cartRepository.findCartByUserId(userId);
+		System.out.println("Cart :"+cart);
+		System.out.println("Cart Items :"+cart.getCartItems());
 		
 		int totalPrice=0;
 		int totalDiscountedPrice=0;

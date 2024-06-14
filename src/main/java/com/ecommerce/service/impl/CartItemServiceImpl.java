@@ -13,7 +13,6 @@ import com.ecommerce.model.CartItem;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.CartItemRepository;
-import com.ecommerce.repository.CartRepository;
 import com.ecommerce.service.CartItemService;
 import com.ecommerce.service.UserService;
 
@@ -24,8 +23,6 @@ public class CartItemServiceImpl implements CartItemService{
 	private CartItemRepository cartItemRepository;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private CartRepository cartRepository;
 
 	@Override
 	public CartItem createCartItem(CartItem cartItem) {
