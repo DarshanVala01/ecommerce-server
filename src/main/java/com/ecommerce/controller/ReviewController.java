@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ public class ReviewController {
 
 	@Autowired
 	private ReviewService reviewService;
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -39,7 +41,7 @@ public class ReviewController {
 		return new ResponseEntity<Review>(review,HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/product/{productId}")
+	@GetMapping("/product/{productId}")
 	public ResponseEntity<List<Review>> getAllReviews(@PathVariable("productId") Long productId) throws UserException, ProductException{
 		List<Review> reviews = this.reviewService.getAllReview(productId);
 		return new ResponseEntity<List<Review>>(reviews,HttpStatus.ACCEPTED);

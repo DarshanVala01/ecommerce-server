@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.exception.CartItemException;
 import com.ecommerce.exception.ProductException;
 import com.ecommerce.exception.UserException;
 import com.ecommerce.model.Cart;
@@ -35,17 +36,17 @@ public class CartController {
         String email =  authentication.getName();
         User user = this.userRepository.findByEmail(email);
         
-		Cart cart = this.cartService.findUserCart(user.getId());
+		Cart cart = this.cartService.findUserCart(user.getUserId());
 		return new ResponseEntity<Cart>(cart,HttpStatus.OK);
 	}
 	
 	@PutMapping("/add")
-	public ResponseEntity<ApiResponse> addCartItem(@RequestBody AddToCartRequest request) throws ProductException, UserException{
+	public ResponseEntity<ApiResponse> addCartItem(@RequestBody AddToCartRequest request) throws ProductException, UserException, CartItemException{
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email =  authentication.getName();
         User user = this.userRepository.findByEmail(email);
         
-		this.cartService.addCartItem(user.getId(), request);
+		this.cartService.addCartItem(user.getUserId(), request);
 		ApiResponse apiResponse = new ApiResponse();
 		apiResponse.setMessage("Item added to cart");
 		apiResponse.setStatus(true);

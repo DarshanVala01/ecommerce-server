@@ -21,7 +21,7 @@ public class OrderItem {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long orderItemId;
 	
 	@JsonIgnore
 	@ManyToOne	
@@ -38,7 +38,7 @@ public class OrderItem {
 	
 	private int discountedPrice;
 	
-	private long userId;
+	private Long userId;
 	
 	private LocalDateTime deliveryDate;
 }

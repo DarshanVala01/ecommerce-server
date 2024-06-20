@@ -14,6 +14,7 @@ import com.ecommerce.model.Cart;
 import com.ecommerce.model.CartItem;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.OrderItem;
+import com.ecommerce.model.PaymentDetails;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.AddressRepository;
 import com.ecommerce.repository.OrderItemRepository;
@@ -43,7 +44,7 @@ public class OrderServiceImpl implements OrderService{
 		user.getAddress().add(address);
 		this.userRepository.save(user);
 		
-		Cart cart = this.cartService.findUserCart(user.getId());
+		Cart cart = this.cartService.findUserCart(user.getUserId());
 		List<OrderItem> orderItems = new ArrayList<>();
 		
 		for(CartItem cartItem : cart.getCartItems()) {
@@ -71,8 +72,12 @@ public class OrderServiceImpl implements OrderService{
 		createdOrder.setShippingAddress(address);
 		createdOrder.setOrderDate(LocalDateTime.now());
 		createdOrder.setOrderStatus("PENDING");
-		createdOrder.getPaymentDetails().setPaymentStatus("PENDING");
 		createdOrder.setCreatedAt(LocalDateTime.now());
+		
+		 if (createdOrder.getPaymentDetails() == null) {
+	            createdOrder.setPaymentDetails(new PaymentDetails());
+	     }
+		createdOrder.getPaymentDetails().setPaymentStatus("PENDING");
 		
 		Order saveOrder = this.orderRepository.save(createdOrder);
 		

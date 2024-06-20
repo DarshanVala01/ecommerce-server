@@ -29,7 +29,7 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 //	@Column(name = "order_id")
 	private String orderId;
@@ -49,7 +49,7 @@ public class Order {
 	private Address shippingAddress;
 	
 	@Embedded
-	private PaymentDetails paymentDetails;
+	private PaymentDetails paymentDetails=new PaymentDetails();
 	
 	private double totalPrice;
 	

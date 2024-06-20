@@ -16,25 +16,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItem {
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long cartItemId;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY )
-	private long id;
-	
-	@JsonIgnore
-	@ManyToOne
-	private Cart cart;
-	
-	@ManyToOne
-	private Product product;
-	
-	private String size;
-	
-	private int quantity;
-	
-	private Integer price;
-	
-	private Integer discountedPrice;
-	
-	private long userId;
+    @ManyToOne
+    @JsonIgnore
+    private Cart cart;
+
+    @ManyToOne
+    private Product product;
+
+    private String size;
+
+    private int quantity;
+
+    private Integer price;
+
+    private Integer discountedPrice;
+
+    private long userId;
 }
+

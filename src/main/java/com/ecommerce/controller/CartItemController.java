@@ -31,10 +31,10 @@ public class CartItemController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email =  authentication.getName();
         User user = this.userRepository.findByEmail(email);
-		this.cartItemService.removeCartItem(user.getId(), cartItemId);
+		this.cartItemService.removeCartItem(user.getUserId(), cartItemId);
 		
 		ApiResponse response = new ApiResponse();
-		response.setMessage("Item Deleted Successfully From Cart");
+		response.setMessage("Item Deleted successfully from cart");
 		response.setStatus(true);
 		
 		return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);

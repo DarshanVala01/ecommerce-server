@@ -12,5 +12,4 @@ public class AddToCartRequest {
 	private long productId;
 	private String size;
 	private int quantity;
-	private Integer price;
 }

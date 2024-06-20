@@ -23,6 +23,8 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	// Example of filter products
+	// BASE_URL/api/products?category=cat&color=value&size=M............other all like this
 	@GetMapping("/products")
 	public ResponseEntity<Page<Product>> findProductByCategoryHandler(@RequestParam String category, 
 			@RequestParam List<String> color, @RequestParam List<String> size,@RequestParam Integer minPrice,

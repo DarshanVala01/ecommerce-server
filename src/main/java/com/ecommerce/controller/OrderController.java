@@ -28,6 +28,7 @@ public class OrderController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
 	@Autowired
 	private OrderService orderService;
 	
@@ -37,7 +38,7 @@ public class OrderController {
         String email =  authentication.getName();
         User user = this.userRepository.findByEmail(email);
 		Order order = this.orderService.createOrder(user, shippingAddress);
-		return new ResponseEntity<Order>(order,HttpStatus.CREATED);
+		return new ResponseEntity<>(order,HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/user")
@@ -45,7 +46,7 @@ public class OrderController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email =  authentication.getName();
         User user = this.userRepository.findByEmail(email);
-		List<Order> orders = this.orderService.usersOrderHistory(user.getId());
+		List<Order> orders = this.orderService.usersOrderHistory(user.getUserId());
 		return new ResponseEntity<List<Order>>(orders,HttpStatus.OK);
 	}
 	
@@ -54,5 +55,4 @@ public class OrderController {
 		Order order = this.orderService.findOrderById(orderId);
 		return new ResponseEntity<Order>(order,HttpStatus.ACCEPTED);
 	}
-	
 }

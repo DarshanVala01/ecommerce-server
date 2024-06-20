@@ -9,7 +9,7 @@ public interface CartService {
 
 	public Cart createCart(User user);
 	
-	public String addCartItem(long userId,AddToCartRequest request) throws ProductException;
+	public String addCartItem(Long userId,AddToCartRequest request) throws ProductException ;
 	
-	public Cart findUserCart(long userId);
+	public Cart findUserCart(Long userId);
 }

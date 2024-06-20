@@ -21,56 +21,43 @@ public class CartItemServiceImpl implements CartItemService{
 	
 	@Autowired
 	private CartItemRepository cartItemRepository;
+	
 	@Autowired
 	private UserService userService;
 
 	@Override
-	public CartItem createCartItem(CartItem cartItem) {
-		cartItem.setQuantity(1);
-		cartItem.setPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity());
-		cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice() * cartItem.getQuantity());
-		
-		CartItem cretaedCartItem = this.cartItemRepository.save(cartItem);
-		return cretaedCartItem;
-	}
-
-	@Override
-	public CartItem updateCartItem(long userId, long id, CartItem cartItem) throws CartItemException, UserException {
-		CartItem item = findCartItemById(id);
+	public CartItem updateCartItem(Long userId, Long cartItemId, CartItem cartItem) throws CartItemException, UserException {
+		CartItem item = findCartItemById(cartItemId);
 		User user = this.userService.findUserById(item.getUserId());
-		
-		if (user.getId() == userId) {
+			
+		if (user.getUserId().equals(userId)) {
 			item.setQuantity(cartItem.getQuantity());
-			item.setPrice(item.getQuantity() * item.getProduct().getPrice());
-			item.setDiscountedPrice(item.getProduct().getDiscountedPrice() * item.getQuantity());
+			item.setPrice(item.getQuantity()*item.getProduct().getPrice());
+			item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
 		}
-		CartItem updatedItem = this.cartItemRepository.save(item);
-		return updatedItem;
+		return this.cartItemRepository.save(item);
 	}
 
 	@Override
-	public CartItem isCartItemExist(Cart cart, Product product, String size, long userId) {
+	public CartItem isCartItemExist(Cart cart, Product product, String size, Long userId) {
 		CartItem cartItem = this.cartItemRepository.isCartItemExist(cart, product, size, userId);
-		return cartItem;
+		return cartItem; 
 	}
 
 	@Override
-	public void removeCartItem(long userId, long cartItemId) throws CartItemException, UserException {
+	public void removeCartItem(Long userId, Long cartItemId) throws CartItemException, UserException {
 		CartItem cartItem = findCartItemById(cartItemId);
 		User user = this.userService.findUserById(cartItem.getUserId());
-		
 		User reqUser = this.userService.findUserById(userId);
-		
-		if (user.getId() == reqUser.getId()) {
-			this.cartItemRepository.deleteById(cartItemId);
+		if (user.getUserId().equals(reqUser.getUserId())) {
+			this.cartItemRepository.deleteCartItem(cartItemId);
 		}else {
 			throw new UserException("You can't remove another users item");
 		}
-		
 	}
 
 	@Override
-	public CartItem findCartItemById(long cartItemId) throws CartItemException {
+	public CartItem findCartItemById(Long cartItemId) throws CartItemException {
 		Optional<CartItem> cartItem = this.cartItemRepository.findById(cartItemId);
 		if (cartItem.isPresent()) {
 			return cartItem.get();
